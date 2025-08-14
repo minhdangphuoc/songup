@@ -20,7 +20,7 @@ export function SongCard({
     return (
         <div
             className={cn(
-                "group relative flex items-center space-x-4 rounded-lg border border-white/20 bg-white/10 p-3 shadow-md transition-all",
+                "group relative flex items-center space-x-4 rounded-lg border border-white/20 bg-black/10 p-3 shadow-md transition-all",
                 {
                     "bg-white/30": active,
                     "hover:cursor-pointer": onClick,
