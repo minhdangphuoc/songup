@@ -192,7 +192,7 @@ export default function Host({ room }: { room: Room }) {
                                     />
 
                                     {isBlurred && (
-                                        <div className="absolute inset-0 z-20 bg-black/30 backdrop-blur-3xl flex items-center justify-center">
+                                        <div className="absolute inset-0 z-20 bg-black/30 backdrop-blur-2xl  lg:backdrop-blur-[128px] flex items-center justify-center">
                                             <div className="text-white text-center">
                                                 <div className="text-6xl mb-4">🎵</div>
                                                 <p className="text-xl font-semibold">Content Hidden</p>
