@@ -203,7 +203,7 @@ export default function Host({ room }: { room: Room }) {
 
                                     <button
                                         onClick={() => setIsBlurred(!isBlurred)}
-                                        className="absolute top-4 right-4 z-30 border-white/20 bg-white/10 hover:bg-white/20 text-gray-800 hover:text-black border p-3 rounded-xl backdrop-blur-sm transition-all duration-200 shadow-lg hover:shadow-xl"
+                                        className="absolute top-4 right-4 z-30 border-white/20 bg-white/10 hover:bg-white/20 text-gray-800 hover:text-black border p-3 rounded-xl backdrop-blur-sm transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
                                         title={isBlurred ? "Show video" : "Hide video"}
                                     >
                                         {isBlurred ? (
@@ -235,7 +235,7 @@ export default function Host({ room }: { room: Room }) {
                         </div>
                     </div>
 
-                    <ScrollArea className={`${songs.length > 0 ? "" : "lg:row-span-2"} transition-all duration-200 rounded-lg border border-white/20 bg-black/10 p-4 shadow-md backdrop-blur-lg`}>
+                    <ScrollArea className={`${songs.length > 0 ? "" : "lg:row-span-2"} transition-all duration-300 ease-in-out rounded-lg border border-white/20 bg-black/10 p-4 shadow-md backdrop-blur-lg`}>
                         <ul ref={animationParent} className="space-y-4">
                             {songs.length > 0 ? (
                                 songs.map((song) => (

@@ -22,7 +22,7 @@ export function SongCard({
             className={cn(
                 "group relative flex items-center space-x-4 rounded-lg border border-white/20 bg-black/10 p-3 shadow-md transition-all",
                 {
-                    "bg-white/30": active,
+                    "bg-white/10": active,
                     "hover:cursor-pointer": onClick,
                 },
             )}
