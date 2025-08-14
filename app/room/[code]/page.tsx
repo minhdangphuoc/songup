@@ -20,27 +20,19 @@ export default async function Page(props: {
 
     const supabase = createClient()
 
-    const { data: room } = await supabase
+    const { data: room, error } = await supabase
         .from("rooms")
         .select()
         .eq("code", params.code)
         .single()
 
-    if (!room) notFound()
-
-    let { data: songs } = await supabase
-        .from("songs")
-        .select()
-        .eq("room", room.id)
-        .order("id")
-        .gte("id", room.current_song ?? 0)
-
-    if (!songs) songs = []
-
+    if (error || !room) {
+        notFound()
+    }
+    
     return (
         <RoomPage
             room={room}
-            songs={songs}
             user={{
                 isLoggedIn: session.isLoggedIn,
                 username: session.username,

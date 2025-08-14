@@ -9,28 +9,90 @@ import { Room, Song } from "@/types/global"
 import { UUID } from "crypto"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { addSongToQueue, SongResult } from "./actions"
+import { createClient } from "@/lib/supabase/client"
+import {
+    useQuery,
+    useSubscription,
+} from "@supabase-cache-helpers/postgrest-react-query"
 
 export function RoomPage({
     room,
-    songs,
     user,
 }: {
     room: Room
-    songs: Song[]
     user: {
         isLoggedIn: boolean
         username: string
         uuid: UUID
     }
 }) {
-    const [dialogOpen, setDialogOpen] = useState(false)
 
-    const songsAddedByUser = songs?.filter(
-        (song) =>
-            song.added_by === user.uuid && song.id > (room?.current_song ?? 0),
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [songsAddedByUser, setSongsAddedByUser] = useState<Song[]>([])
+
+    const supabase = createClient()
+
+    // query the current song from the rooms table
+    const { data } = useQuery(
+        supabase
+            .from("rooms")
+            .select("current_song")
+            .eq("code", room.code!)
+            .single(),
     )
+
+    const currentSong = data?.current_song ?? 0
+
+    // subscribe to changes to the room to update the current song
+    useSubscription(
+        supabase,
+        "postgres_rooms_changes",
+        {
+            event: "*",
+            schema: "public",
+            table: "rooms",
+            filter: `id=eq.${room.id}`,
+        },
+        ["id"],
+    )
+
+    let { data: songs = [] } = useQuery(
+        supabase
+            .from("songs")
+            .select("*")
+            .eq("room", room.id)
+            .gte("id", currentSong)
+            .order("id"),
+        {
+            placeholderData: (prev) => prev,
+        },
+    )
+
+    if (!songs) songs = []
+
+    // subscribe to changes in the songs
+    useSubscription(
+        supabase,
+        "postgres_songs_changes",
+        {
+            event: "*",
+            schema: "public",
+            table: "songs",
+            filter: `room=eq.${room.id}`,
+        },
+        ["id"],
+    )
+
+    useEffect(() => {
+        if (songs.length > 1) {
+            setSongsAddedByUser(songs?.filter(
+                (song) =>
+                    song.added_by === user.uuid && song.id > (room?.current_song ?? 0),
+            ))
+        }
+    }, [songs, room.current_song])
 
     const songsLeftToAdd =
         room?.max_songs_per_user &&
