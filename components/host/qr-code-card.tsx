@@ -2,7 +2,7 @@ import { RoomQRCode } from "./qr-code"
 
 export function QRCodeCard({ roomCode }: { roomCode: string }) {
     return (
-        <div className="flex w-full flex-col rounded-lg border border-white/20 bg-black/10 transition-all duration-300 ease-in-out p-4 shadow-md backdrop-blur-lg">
+        <div className="flex w-full flex-col rounded-lg border border-white/20 bg-black/40 transition-all duration-300 ease-in-out p-4 shadow-md backdrop-blur-lg">
             <h3 className="mb-2 text-2xl font-bold">Add songs to the queue</h3>
             <p className="mb-4">
                 Visit songup.stevedecoder.tech and enter room code{" "}

@@ -235,7 +235,7 @@ export default function Host({ room }: { room: Room }) {
                         </div>
                     </div>
 
-                    <ScrollArea className={`${songs.length > 0 ? "" : "lg:row-span-2"} transition-all duration-300 ease-in-out rounded-lg border border-white/20 bg-black/10 p-4 shadow-md backdrop-blur-lg`}>
+                    <ScrollArea className={`${songs.length > 0 ? "" : "lg:row-span-2"} transition-all duration-200 rounded-lg border border-white/20 bg-black/40 p-4 shadow-md backdrop-blur-lg`}>
                         <ul ref={animationParent} className="space-y-4">
                             {songs.length > 0 ? (
                                 songs.map((song) => (
