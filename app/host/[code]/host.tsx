@@ -2,6 +2,7 @@
 
 import { HostBackground } from "@/components/host/background"
 import { QRCodeCard } from "@/components/host/qr-code-card"
+import { RoomQRCode } from "@/components/host/qr-code"
 import { SongCard } from "@/components/songs/song-card"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -14,11 +15,11 @@ import {
     useSubscription,
 } from "@supabase-cache-helpers/postgrest-react-query"
 import { useQueryClient } from "@tanstack/react-query"
-import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import YouTube, { YouTubeProps } from "react-youtube"
 import { deleteSong, updateCurrentSong } from "./actions"
 import { EyeIcon, EyeClosed } from "lucide-react"
+import { getURL } from "@/lib/utils"
 
 export default function Host({ room }: { room: Room }) {
     /* 
@@ -149,6 +150,8 @@ export default function Host({ room }: { room: Room }) {
         }
     }
 
+    const url = getURL(`/room/${room.code!}`)
+
     return (
         <div className="relative min-h-screen w-full text-white lg:h-screen">
             <HostBackground videoId={songs[0]?.video_id} />
@@ -212,7 +215,11 @@ export default function Host({ room }: { room: Room }) {
                                 </div>
                             )}
                             <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-                                    <QRCodeCard roomCode={room.code!} />
+                                <h2 className="mb-2 text-2xl font-bold">Add songs to the queue</h2>
+                                <h3 className="mb-2 text-lg font-medium">{url}</h3>
+                                <div className="flex size-4/5 justify-center">
+                                    <RoomQRCode roomCode={room.code!} />
+                                </div>
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-3">
@@ -227,7 +234,8 @@ export default function Host({ room }: { room: Room }) {
                             </h2>
                         </div>
                     </div>
-                    <ScrollArea className="rounded-lg border border-white/20 bg-white/10 p-4 shadow-md backdrop-blur-lg">
+
+                    <ScrollArea className={`${songs.length > 0 ? "" : "lg:row-span-2"} transition-all duration-200 rounded-lg border border-white/20 bg-black/10 p-4 shadow-md backdrop-blur-lg`}>
                         <ul ref={animationParent} className="space-y-4">
                             {songs.length > 0 ? (
                                 songs.map((song) => (
@@ -298,7 +306,7 @@ export default function Host({ room }: { room: Room }) {
                             )}
                         </ul>
                     </ScrollArea>
-                    <QRCodeCard roomCode={room.code!} />
+                    {songs.length > 0 && <QRCodeCard roomCode={room.code!} />}
                     <footer className="flex w-full items-center justify-between px-1">
                         {/* <Link href="/">
                         <h2 className="text-3xl font-bold text-white/60">
