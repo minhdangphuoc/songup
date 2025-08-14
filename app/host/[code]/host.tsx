@@ -189,7 +189,7 @@ export default function Host({ room }: { room: Room }) {
                                     />
 
                                     {isBlurred && (
-                                        <div className="absolute inset-0 z-20 bg-black/30 backdrop-blur-2xl flex items-center justify-center">
+                                        <div className="absolute inset-0 z-20 bg-black/30 backdrop-blur-3xl flex items-center justify-center">
                                             <div className="text-white text-center">
                                                 <div className="text-6xl mb-4">🎵</div>
                                                 <p className="text-xl font-semibold">Content Hidden</p>
@@ -212,15 +212,7 @@ export default function Host({ room }: { room: Room }) {
                                 </div>
                             )}
                             <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-                                <h2 className="text-6xl font-bold">
-                                    songup.stevedecoder.tech
-                                </h2>
-                                <p className="text-4xl">
-                                    Enter code{" "}
-                                    <span className="font-extrabold">
-                                        {room.code}
-                                    </span>
-                                </p>
+                                    <QRCodeCard roomCode={room.code!} />
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center gap-3">
